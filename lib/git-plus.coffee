@@ -39,6 +39,7 @@ GitStashPop            = require './models/git-stash-pop'
 GitStashSave           = require './models/git-stash-save'
 GitStashSaveMessage    = require './models/git-stash-save-message'
 GitStatus              = require './models/git-status'
+GitStatusBeta          = require './models/git-status-beta'
 GitTags                = require './models/git-tags'
 GitUnstageFiles        = require './models/git-unstage-files'
 GitUnstageFileContext  = require './models/context/git-unstage-file-context'
@@ -141,6 +142,7 @@ module.exports =
       @subscriptions.add atom.commands.add 'atom-workspace', 'git-plus:merge-no-fast-forward', -> git.getRepo().then((repo) -> GitMerge(repo, noFastForward: true))
       @subscriptions.add atom.commands.add 'atom-workspace', 'git-plus:rebase', -> git.getRepo().then((repo) -> GitRebase(repo))
       @subscriptions.add atom.commands.add 'atom-workspace', 'git-plus:git-open-changed-files', -> git.getRepo().then((repo) -> GitOpenChangedFiles(repo))
+      @subscriptions.add atom.commands.add 'atom-workspace', 'git-plus:status-beta', -> git.getRepo().then((repo) -> GitStatusBeta(repo))
       @subscriptions.add atom.commands.add '.tree-view', 'git-plus-context:add', -> GitAddContext()
       @subscriptions.add atom.commands.add '.tree-view', 'git-plus-context:add-and-commit', -> GitAddAndCommitContext()
       @subscriptions.add atom.commands.add '.tree-view', 'git-plus-context:checkout-file', -> GitCheckoutFileContext()
