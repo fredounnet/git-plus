@@ -1,14 +1,8 @@
 {$$, SelectListView} = require 'atom-space-pen-views'
-{CompositeDisposable} = require 'atom'
 fs = require 'fs-plus'
 git = require '../git'
-notifier = require '../notifier'
-BranchListView = require './branch-list-view'
-GitDiff = require '../models/git-diff'
 Path = require 'path'
 RevisionView = require './git-revision-view'
-
-disposables = new CompositeDisposable
 
 showFile = (filePath) ->
   if atom.config.get('git-plus.general.openInPane')
@@ -25,7 +19,7 @@ prepFile = (text, filePath) ->
         if err then reject err else resolve true
 
 module.exports =
-class DiffBranchFilesListView extends BranchListView
+class DiffBranchFilesListView extends SelectListView
   initialize: (@repo, @data, @branchName) ->
     super
     @show()
