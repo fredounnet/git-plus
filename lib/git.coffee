@@ -2,6 +2,7 @@ Os = require 'os'
 {BufferedProcess, Directory} = require 'atom'
 RepoListView = require './views/repo-list-view'
 notifier = require './notifier'
+ActivityLogger = require('./activity-logger').default
 
 gitUntrackedFiles = (repo, dataUnstaged=[]) ->
   args = ['ls-files', '-o', '--exclude-standard']
@@ -117,11 +118,17 @@ module.exports = git =
     args = ['add']
     if update then args.push '--update' else args.push '--all'
     args.push(if file then file else '.')
+
+    message = """git add #{args[args.length - 1]}"""
+
     git.cmd(args, cwd: repo.getWorkingDirectory())
-    .then (output) ->
-      if output isnt false
-        notifier.addSuccess "Added #{file ? 'all files'}"
-    .catch (msg) -> notifier.addError msg
+    .then (output) -> ActivityLogger.record({message,output})
+    .catch (output) ->
+      ActivityLogger.record({
+        message,
+        output,
+        failed: true
+      })
 
   getAllRepos: ->
     {project} = atom
